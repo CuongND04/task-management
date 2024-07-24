@@ -2,9 +2,12 @@ const Task = require("../models/task.model");
 
 // [GET] /api/v1/tasks
 module.exports.index = async (req, res) => {
-  const tasks = await Task.find({
-    deleted: false,
-  });
+  const find = { deleted: false };
+  if (req.query.status) {
+    // nếu có status sau dấu "?"
+    find.status = req.query.status;
+  }
+  const tasks = await Task.find(find);
 
   res.json(tasks);
 };
