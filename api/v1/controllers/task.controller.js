@@ -5,7 +5,12 @@ const Task = require("../models/task.model");
 // [GET] /api/v1/tasks
 module.exports.index = async (req, res) => {
   // lọc theo trạng thái
-  const find = { deleted: false };
+  const userId = req.user.id;
+
+  const find = {
+    $or: [{ createdBy: userId }, { listUser: userId }], // trong listUser có userId
+    deleted: false,
+  };
   if (req.query.status) {
     // nếu có status sau dấu "?"
     find.status = req.query.status;
