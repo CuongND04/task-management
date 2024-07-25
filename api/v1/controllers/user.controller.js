@@ -96,7 +96,6 @@ module.exports.forgotPassword = async (req, res) => {
     otp: otp,
     expireAt: Date.now() + timeExpire * 60 * 1000,
   };
-  console.log(objectForgotPassword);
   const forgotPassword = new ForgotPassword(objectForgotPassword);
   await forgotPassword.save();
   // Việc 2: Gửi mã OTP qua mail cho người dùng
@@ -172,15 +171,14 @@ module.exports.resetPassword = async (req, res) => {
 // [GET] /api/v1/users/detail/
 module.exports.detail = async (req, res) => {
   // Muốn kiểm tra một tính năng đăng nhập mới thực hiện được, phải check qua token
-  const user = await User.findOne({
-    token: req.cookies.token,
-    deleted: false,
-  }).select("fullName email");
-  console.log(`user = ${user}`);
+  // const user = await User.findOne({
+  //   token: req.cookies.token,
+  //   deleted: false,
+  // }).select("fullName email");
 
   res.json({
     code: 200,
     message: "Thành công!",
-    user: user,
+    user: req.user,
   });
 };
