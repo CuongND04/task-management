@@ -132,6 +132,7 @@ module.exports.changeMulti = async (req, res) => {
 // [POST] /api/v1/tasks/create
 module.exports.create = async (req, res) => {
   try {
+    req.body.createdBy = req.user.id;
     const task = new Task(req.body);
     const data = await task.save();
 
@@ -141,6 +142,7 @@ module.exports.create = async (req, res) => {
       data: data,
     });
   } catch (error) {
+    console.log(error);
     res.json({
       code: 400,
       message: `Không hợp lệ!`,
