@@ -167,3 +167,19 @@ module.exports.resetPassword = async (req, res) => {
     message: "Đổi mật khẩu thành công!",
   });
 };
+
+// [GET] /api/v1/users/detail/
+module.exports.detail = async (req, res) => {
+  // Muốn kiểm tra một tính năng đăng nhập mới thực hiện được, phải check qua token
+  const user = await User.findOne({
+    token: req.cookies.token,
+    deleted: false,
+  }).select("fullName email");
+  console.log(`user = ${user}`);
+
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    user: user,
+  });
+};
